@@ -1,4 +1,4 @@
-FROM lscr.io/linuxserver/baseimage-selkies:ubuntu-noble
+FROM lscr.io/linuxserver/baseimage-selkies:ubuntunoble
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
