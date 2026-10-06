@@ -1,0 +1,41 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Proprietary Tomb Raider game data and generated derivatives
+game/
+assets/
+extracted/
+tracks/
+*.bin
+*.cue
+*.iso
+*.wav
+*.ogg
+*.rpl
+*.phd
+*.pcx
+
+# Runtime and personal state
+config/
+saves/
+logs/
+*.log
+*.pid
+*.core
+core
+/root/.openlara/
+
+# Archives and local package downloads
+*.tar
+*.tar.gz
+*.zip
+*.7z
+*.deb
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
