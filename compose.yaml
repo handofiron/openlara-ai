@@ -1,0 +1,46 @@
+---
+services:
+  open-lara:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: local/open-lara-selkies:latest
+    container_name: open-lara
+    restart: unless-stopped
+
+    shm_size: "1gb"
+
+    security_opt:
+      - no-new-privileges:true
+
+    environment:
+      PUID: "0"
+      PGID: "0"
+      TZ: "Europe/London"
+      CUSTOM_PORT: "3001"
+      SELKIES_MODE: "webrtc"
+      SELKIES_ENABLE_BASIC_AUTH: "true"
+      SELKIES_USER: "james"
+      SELKIES_PASSWORD: "${DESKTOP_PASSWORD}"
+      SELKIES_AUDIO_ENABLED: "true"
+      SELKIES_ENCODER: "vaapi"
+      SELKIES_RENDER_NODE: "/dev/dri/renderD128"
+      OPENLARA_GAME_DIR: "/game"
+      OPENLARA_SAVE_DIR: "/config/openlara"
+
+    devices:
+      - /dev/dri:/dev/dri
+
+    group_add:
+      - "44"
+      - "105"
+
+    volumes:
+      - ./config:/config
+      - ./game:/game:ro
+      - ./saves:/config/openlara
+      - ./logs:/logs
+
+    ports:
+      - "8080:3001/tcp"
+      - "8080:3001/udp"

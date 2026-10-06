@@ -1,0 +1,38 @@
+#!/usr/bin/with-contenv bash
+set -euo pipefail
+
+cat > /defaults/autostart/openlara.desktop <<'DESKTOP'
+[Desktop Entry]
+Type=Application
+Name=OpenLara
+Comment=Classic Tomb Raider engine
+Exec=/usr/local/bin/openlara-launch
+Terminal=false
+X-GNOME-Autostart-enabled=true
+DESKTOP
+
+cat > /usr/local/bin/openlara-launch <<'LAUNCHER'
+#!/usr/bin/env bash
+set -euo pipefail
+
+game_dir="${OPENLARA_GAME_DIR:-/game}"
+save_dir="${OPENLARA_SAVE_DIR:-/config/openlara}"
+
+mkdir -p "$save_dir"
+
+if [ ! -x "$game_dir/OpenLara" ]; then
+    xmessage -center \
+        'OpenLara game data is not installed yet.\n\nRun the host import script, then restart this container.'
+    exit 0
+fi
+
+cd "$game_dir"
+
+exec env \
+    HOME="$save_dir" \
+    LIBGL_ALWAYS_SOFTWARE=0 \
+    MESA_LOADER_DRIVER_OVERRIDE="${MESA_LOADER_DRIVER_OVERRIDE:-iris}" \
+    "$game_dir/OpenLara"
+LAUNCHER
+
+chmod 0755 /usr/local/bin/openlara-launch
