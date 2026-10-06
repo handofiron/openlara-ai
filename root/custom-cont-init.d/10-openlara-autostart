@@ -17,10 +17,8 @@ fi
 
 cat > /etc/nginx/sites-enabled/default <<'NGINX'
 server {
-    listen 3001 default_server;
-    listen [::]:3001 default_server;
-    listen 3001 ssl;
-    listen [::]:3001 ssl;
+    listen 3001 ssl default_server;
+    listen [::]:3001 ssl default_server;
 
     ssl_certificate     /config/ssl/cert.pem;
     ssl_certificate_key /config/ssl/cert.key;
