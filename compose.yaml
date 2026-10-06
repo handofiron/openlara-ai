@@ -23,7 +23,7 @@ services:
       SELKIES_BASIC_AUTH_USER: "james"
       SELKIES_BASIC_AUTH_PASSWORD: "${DESKTOP_PASSWORD}"
       SELKIES_AUDIO_ENABLED: "true"
-      SELKIES_ENCODER: "vaapi"
+      SELKIES_ENCODER: "jpeg,h264enc"
       DRI_NODE: "/dev/dri/renderD128"
       DRINODE: "/dev/dri/renderD128"
       OPENLARA_GAME_DIR: "/game"
