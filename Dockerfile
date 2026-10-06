@@ -5,7 +5,7 @@ RUN apt-get update \
         libx11-6 \
         libgl1 \
         libpulse0 \
-        libasound2 \
+        libasound2t64 \
         libstdc++6 \
         libgcc-s1 \
         mesa-utils \
