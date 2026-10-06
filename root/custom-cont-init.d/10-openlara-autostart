@@ -22,7 +22,7 @@ if [ -z "${DESKTOP_USER:-}" ] || [ -z "${DESKTOP_PASSWORD:-}" ]; then
 fi
 
 htpasswd -Bbc /config/nginx/.htpasswd "$DESKTOP_USER" "$DESKTOP_PASSWORD"
-chmod 600 /config/nginx/.htpasswd
+chmod 644 /config/nginx/.htpasswd
 
 cat > /etc/nginx/sites-enabled/default <<'NGINX'
 server {
