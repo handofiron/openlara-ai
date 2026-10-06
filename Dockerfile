@@ -19,7 +19,6 @@ COPY root/ /
 
 RUN chmod +x /custom-cont-init.d/10-openlara-autostart \
     && mkdir -p \
-        /defaults/autostart \
         /opt/openlara \
         /config/openlara
 
