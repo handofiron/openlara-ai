@@ -12,6 +12,7 @@ RUN apt-get update \
         mesa-utils-extra \
         intel-gpu-tools \
         xterm \
+        apache2-utils \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

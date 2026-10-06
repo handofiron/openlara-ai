@@ -4,7 +4,8 @@ set -euo pipefail
 mkdir -p \
     /config/ssl \
     /config/.config/openbox \
-    /config/openlara
+    /config/openlara \
+    /config/nginx
 
 if [ ! -s /config/ssl/cert.pem ] || [ ! -s /config/ssl/cert.key ]; then
     openssl req -x509 -nodes -newkey rsa:2048 \
@@ -15,8 +16,18 @@ if [ ! -s /config/ssl/cert.pem ] || [ ! -s /config/ssl/cert.key ]; then
     chmod 600 /config/ssl/cert.key
 fi
 
+if [ -z "${DESKTOP_USER:-}" ] || [ -z "${DESKTOP_PASSWORD:-}" ]; then
+    echo "DESKTOP_USER and DESKTOP_PASSWORD must be set." >&2
+    exit 1
+fi
+
+htpasswd -Bbc /config/nginx/.htpasswd "$DESKTOP_USER" "$DESKTOP_PASSWORD"
+chmod 600 /config/nginx/.htpasswd
+
 cat > /etc/nginx/sites-enabled/default <<'NGINX'
 server {
+    auth_basic "OpenLara browser desktop";
+    auth_basic_user_file /config/nginx/.htpasswd;
     listen 3001 ssl default_server;
     listen [::]:3001 ssl default_server;
 
