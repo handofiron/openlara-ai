@@ -11,6 +11,7 @@ ACTION_KEYS = {
     "forward": "Up",
     "left": "Left",
     "right": "Right",
+    "escape": "Escape",
 }
 
 held_key = None
@@ -37,7 +38,7 @@ def release_held_key():
         held_key = None
 
 
-def press_action(action):
+def press_action(action, duration_ms=0):
     global held_key
 
     if action == "no-op":
@@ -47,6 +48,16 @@ def press_action(action):
     if action == "jump":
         release_held_key()
         result = xdotool("key", "--clearmodifiers", "Alt")
+        return {
+            "action": action,
+            "held_key": None,
+            "returncode": result.returncode,
+            "stderr": result.stderr.decode(errors="replace"),
+        }
+
+    if action == "escape":
+        release_held_key()
+        result = xdotool("key", "--clearmodifiers", "Escape")
         return {
             "action": action,
             "held_key": None,
@@ -65,7 +76,12 @@ def press_action(action):
             raise RuntimeError(result.stderr.decode(errors="replace"))
         held_key = key
 
-    return {"action": action, "held_key": held_key}
+    if duration_ms:
+        import time
+        time.sleep(max(0, min(duration_ms, 5000)) / 1000)
+        release_held_key()
+
+    return {"action": action, "held_key": held_key, "duration_ms": duration_ms}
 
 
 class BridgeHandler(BaseHTTPRequestHandler):
@@ -129,7 +145,8 @@ class BridgeHandler(BaseHTTPRequestHandler):
             length = int(self.headers.get("Content-Length", 0))
             payload = json.loads(self.rfile.read(length) or b"{}")
             action = payload.get("action", "no-op")
-            result = press_action(action)
+            duration_ms = int(payload.get("duration_ms", 0))
+            result = press_action(action, duration_ms)
             self.send_json(200, result)
         except Exception as exc:
             self.send_json(400, {"error": str(exc)})
