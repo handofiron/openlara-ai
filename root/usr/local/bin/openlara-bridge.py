@@ -19,6 +19,7 @@ held_key = None
 def run(command):
     return subprocess.run(
         command,
+        env={**__import__("os").environ, "DISPLAY": DISPLAY},
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,
@@ -26,8 +27,7 @@ def run(command):
 
 
 def xdotool(*args):
-    return run(["xdotool", "--display", DISPLAY, *args])
-
+    return run(["xdotool", *args])
 
 def release_held_key():
     global held_key
