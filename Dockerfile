@@ -13,6 +13,7 @@ RUN apt-get update \
         intel-gpu-tools \
         xterm \
         apache2-utils \
+        imagemagick \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

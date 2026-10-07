@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+echo "[custom-init] 20-openlara-bridge: starting diagnostic bridge..."
+
+nohup /usr/local/bin/openlara-bridge.py \
+    >/logs/openlara-bridge.log 2>&1 &
+
+echo "[custom-init] 20-openlara-bridge: started on port 8090"
